@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>JS_Ex01</title>
+  </head>
+  <body>
+    <h1>JavaScript</h1>
+    <!-- <script>
+      document.write(1+1 > 동적);
+    </script> -->
+    <input type="button" value="hi" onclick="alert('hi')">
+    <!-- onchange는 입력한텍스트의 변화를 감지 -->
+    <input type="text" onchange="alert('changed')">
+    <input type="text" onkeydown="alert('key down!')">
+    <!-- quary가 아니라 query이다.......... -->
+    <input type="button" value="night" onclick="
+    document.querySelector('body').style.backgroundColor = 'black';
+    document.querySelector('body').style.color = 'white';
+    ">
+    <input type="button" value="day" onclick="
+    document.querySelector('body').style.backgroundColor = 'white';
+    document.querySelector('body').style.color = 'black';
+    ">
+  <h2>html</h2>
+  <p>
+    1+1 > 정적
+  </p>
+  </body>
+</html>
