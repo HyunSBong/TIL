@@ -3,9 +3,21 @@
 <head>
   <title>WEB - Welcome</title>
   <meta charset="utf-8">
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <meta name="google-signin-client_id" content="---.apps.googleusercontent.com">
+  <script>
+  function onSignIn(googleUser) {
+  var profile = googleUser.getBasicProfile();
+  console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+  console.log('Name: ' + profile.getName());
+  console.log('Image URL: ' + profile.getImageUrl());
+  console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+  }
+  </script>
 </head>
 
 <body>
+  <div class="g-signin2" data-onsuccess="onSignIn"></div>
   <h1><a href="index.html">WEB</a></h1>
   <input id="night_day" type="button" value="night" onclick="
     if(document.querySelector('#night_day').value === 'night'){
