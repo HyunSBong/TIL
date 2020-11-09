@@ -9,6 +9,7 @@ class Point {
     private int point;
     private int allPoint;
     private int price;
+    private int residual;
     HashMap<String, Integer> manage = new HashMap<String, Integer>();
 
     public void saving() {
@@ -44,13 +45,24 @@ class Point {
         System.out.print("이름>> ");
         name = sc.next();
         System.out.print("상품가격>> ");
-        price = sc.nextInt();
-        System.out.print("실지불액: ");
-        allPoint = manage.get(name);
-        System.out.println(price-allPoint);
-        allPoint = 0;
-        manage.put(name, allPoint);
-        System.out.println("잔여포인트: "+allPoint);
+        price = sc.nextInt();allPoint = manage.get(name);
+        if (allPoint == 0) {
+            System.out.println("잔여 포인트가 없습니다.");
+            return;
+        }
+        else {
+            System.out.print("실지불액: ");
+            if ((price-allPoint)<=0) {
+                System.out.println(0);
+                allPoint = allPoint - price;
+            }
+            else {
+                System.out.println(price - allPoint);
+                allPoint = 0;
+            }
+            manage.put(name, allPoint);
+            System.out.println("잔여포인트: "+allPoint);
+        }
     }
     public void bestCustomer() {
         Set<String> keys = manage.keySet();
