@@ -33,7 +33,10 @@ public class Exercise07 extends JFrame {
         for (int i = 0; i < arr.length; i++) {
             JButton btn = new JButton(arr[i]);
             if (i>=2) {
-                btn.setOpaque(true);
+                btn.setOpaque(true); // 불투명
+                btn.setBorderPainted(false); // Border의 외곽선 채우기 설정
+                btn.setContentAreaFilled(true); // 버튼 내용 영역 채우기 설정
+                btn.setFocusPainted(true); // 버튼이 선택되었을 때의 테두리 설정
                 btn.setBackground(Color.CYAN);
             }
             pn2.add(btn);

@@ -17,11 +17,11 @@ public class Exercise04 extends JFrame {
                 Color.GRAY, Color.PINK, Color.LIGHT_GRAY};
         for(int i=0; i<10; i++) {
             JButton btn = new JButton(Integer.toString(i));
-            btn.setOpaque(true); // 불투명
             btn.setBackground(col[i]);
+            btn.setOpaque(true);
+            btn.setBorderPainted(false);
             c.add(btn);
         }
-
 
         setSize(600, 400);
         setVisible(true);

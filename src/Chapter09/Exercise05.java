@@ -19,6 +19,7 @@ public class Exercise05 extends JFrame {
         for(int i=0; i<16; i++) {
             JButton btn = new JButton(Integer.toString(i));
             btn.setOpaque(true); // 불투명
+            btn.setBorderPainted(false);
             btn.setBackground(col[i]);
             c.add(btn);
         }
