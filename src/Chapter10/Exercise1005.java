@@ -27,15 +27,15 @@ public class Exercise1005 extends JFrame {
     private class MyKeyAdapter extends KeyAdapter {
         @Override
         public void keyPressed(KeyEvent e) {
-            int keyCode = e.getKeyCode();
+            int keyChar = e.getKeyChar();
             Font font = la.getFont();
             int size = font.getSize();
 //            System.out.println(keyCode); // 키코드 확인용도
-            switch (keyCode) {
-                case 61: // +키
+            switch (keyChar) {
+                case '+': // +키
                         la.setFont(new Font("Arial", Font.PLAIN, size+5));
                         break;
-                case 45: // -키
+                case '-': // -키
                     if (size > 5) {
                         la.setFont(new Font("Arial", Font.PLAIN, size-5));
                         break;
