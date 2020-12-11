@@ -1,0 +1,12 @@
+<!-- form 태그는 form태그 안의 정보를 submit 버튼을 눌렀을 때 action 이 가리키는 주소로 전송 -->
+<form action="http://localhost:3000/process_create"
+ method="post"> 
+ <!-- 서버에 정보를 추가, 수정할 때는 메소드를 post로 해야한다. 디폴트는 get -->
+    <p><input type="text" name="title"></p>
+    <p>
+        <textarea name="description"></textarea>
+    </p>
+    <p>
+        <input type="submit">
+    </p>
+</form>
