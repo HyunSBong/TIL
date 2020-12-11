@@ -1,6 +1,7 @@
 var http = require('http');
 var fs = require('fs'); 
 var url = require('url');
+var qs = require('querystring');
 
 function templateHTML(title, list, body) {
   return `
@@ -65,11 +66,11 @@ var app = http.createServer(function(request,response){
         var description = 'Hello, Node.js';
         var list = templateList(filelist);
         var template = templateHTML(title, list, `
-        <form action="http://localhost:3000/process_create"
+        <form action="http://localhost:3000/create_process"
         method="post"> 
-          <p><input type="text" name="title" placehoder="제목에 아무거나 입력해보세요"></p>
+          <p><input type="text" name="title" placeholder="title"></p>
           <p>
-            <textarea name="description" placehoder="본문에 아무거나 입력해보세요"></textarea>
+            <textarea name="description" placeholder="description"></textarea>
           </p>
           <p>
             <input type="submit">
@@ -80,6 +81,26 @@ var app = http.createServer(function(request,response){
         response.writeHead(200); //파일이 성공적으로 전송됨
         response.end(template);
       })
+    }
+    else if (pathname == '/create_process') {
+      var body = '';
+      request.on('data', function(data) {
+        body += data;
+
+        if (body.length > 1e6) {
+          request.connection.destroy(); // 너무 길어질 때 부하를 줄이기 위해 연결을 강제로 끊음
+        }
+      });
+      request.on('end', function() {
+        var post = qs.parse(body);
+        console.log(body);
+        var title = post.title;
+        var description = post.description;
+        console.log(title);
+        console.log(description);
+      });
+      response.writeHead(200); //파일이 성공적으로 전송됨
+      response.end('success');
     }
       else {
       response.writeHead(404); // 에러발생
