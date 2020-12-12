@@ -40,7 +40,7 @@ var app = http.createServer(function(request,response){
 
         fs.readdir('/Users/hyunsubong/Developer/Web/TIL/data(web)', function(err, filelist) {
           console.log(filelist);
-          var title = 'Welcome';
+          var title = 'Welcome!';
           var description = 'Hello, Node.js';
           var list = templateList(filelist);
           var template = templateHTML(title, list, `<h2>${title}</h2>${description}`);
@@ -93,14 +93,15 @@ var app = http.createServer(function(request,response){
       });
       request.on('end', function() {
         var post = qs.parse(body);
-        console.log(body);
         var title = post.title;
         var description = post.description;
-        console.log(title);
-        console.log(description);
+        fs.writeFile(`/Users/hyunsubong/Developer/Web/TIL/data(web)/${title}`, description, 'utf-8', function(err) {
+        // fs.watchFile(file,data[,options], callback)
+          // 아래 코드는 Callback함수가 명령을 처리하고 난 다음의 코드
+          response.writeHead(302, {Location: `/?id=${title}`}); //페이지를 리다이렉션
+          response.end('success');
+        })
       });
-      response.writeHead(200); //파일이 성공적으로 전송됨
-      response.end('success');
     }
       else {
       response.writeHead(404); // 에러발생
