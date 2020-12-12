@@ -3,63 +3,8 @@ var fs = require('fs');
 var url = require('url');
 var qs = require('querystring');
 
-var template = {
-  html:function(title, list, body, control) {
-    return `
-    <!doctype html>
-     <html>
-     <head>
-       <title>WEB1 - ${title}</title>
-       <meta charset="utf-8">
-     </head>
-     <body>
-       <h1><a href="/">WEB</a></h1>
-       ${list}
-       ${control}
-       ${body}
-     </body>
-     </html>
-     `;
-  }, list:function(filelist) {
-    var list = '<ul>'; // 파일리스트를 불러와서 표시
-    var i = 0;
-    while(i < filelist.length) {
-      list += `<li><a href="/?id=${filelist[i]}">${filelist[i]}</a></li>`
-      i += 1;
-    }
-    list += '</ul>';
-    return list;
-  }
-}
-/*
-function templateHTML(title, list, body, control) {
-  return `
-  <!doctype html>
-   <html>
-   <head>
-     <title>WEB1 - ${title}</title>
-     <meta charset="utf-8">
-   </head>
-   <body>
-     <h1><a href="/">WEB</a></h1>
-     ${list}
-     ${control}
-     ${body}
-   </body>
-   </html>
-   `;
-}
-function templateList(filelist) {
-  var list = '<ul>'; // 파일리스트를 불러와서 표시
-  var i = 0;
-  while(i < filelist.length) {
-    list += `<li><a href="/?id=${filelist[i]}">${filelist[i]}</a></li>`
-    i += 1;
-  }
-  list += '</ul>';
-  return list;
-}
-*/
+var template = require('/Users/hyunsubong/Developer/Web/TIL/lib/template.js');
+var path = require('path'); // 보안
 
 var app = http.createServer(function(request,response){
     var _url = request.url;
@@ -93,7 +38,8 @@ var app = http.createServer(function(request,response){
         
       } else {
         fs.readdir('/Users/hyunsubong/Developer/Web/TIL/data(web)', function(err, filelist) {
-          fs.readFile(`/Users/hyunsubong/Developer/Web/TIL/data(web)/${queryData.id}`, 'utf8', function(err, description){
+          var filteredId = path.parse(queryData.id).base; // 임의로 파일 탐색하는 것을 차단
+          fs.readFile(`/Users/hyunsubong/Developer/Web/TIL/data(web)/${filteredId}`, 'utf8', function(err, description){
             var title = queryData.id;
             var list = template.list(filelist);
             var html = template.html(title, list, 
@@ -157,7 +103,8 @@ var app = http.createServer(function(request,response){
     }
       else if(pathname == '/update') { // 업데이트 페이지에서 queryData.id를 가져와 해당 페이지에 form을 통해 정보 수정
         fs.readdir('/Users/hyunsubong/Developer/Web/TIL/data(web)', function(err, filelist) {
-          fs.readFile(`/Users/hyunsubong/Developer/Web/TIL/data(web)/${queryData.id}`, 'utf8', function(err, description){
+          var filteredId = path.parse(queryData.id).base; // 임의로 파일 탐색하는 것을 차단
+          fs.readFile(`/Users/hyunsubong/Developer/Web/TIL/data(web)/${filteredId}}`, 'utf8', function(err, description){
             var title = queryData.id;
             var list = template.list(filelist);
             var html = template.html(title, list, `
@@ -213,7 +160,8 @@ var app = http.createServer(function(request,response){
           var post = qs.parse(body);
           var id = post.id;
           // fs.unlink(path, callback)
-          fs.unlink(`/Users/hyunsubong/Developer/Web/TIL/data(web)/${id}`, function(err){
+          var filteredId = path.parse(id).base; // 임의로 파일 탐색하는 것을 차단
+          fs.unlink(`/Users/hyunsubong/Developer/Web/TIL/data(web)/${filteredId}`, function(err){
             response.writeHead(302, {Location: `/`}); //페이지를 리다이렉션
             response.end();
             // 파일 삭제 후 홈으로 이동
