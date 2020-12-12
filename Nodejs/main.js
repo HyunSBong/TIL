@@ -41,7 +41,7 @@ var app = http.createServer(function(request,response){
         fs.readdir('/Users/hyunsubong/Developer/Web/TIL/data(web)', function(err, filelist) {
           console.log(filelist);
           var title = 'Welcome!';
-          var description = 'Hello, Node.js';
+          var description = 'Hello, Node.js.';
           var list = templateList(filelist);
           var template = templateHTML(title, list, 
             `<h2>${title}</h2>${description}`,
@@ -72,7 +72,7 @@ var app = http.createServer(function(request,response){
         var description = 'Hello, Node.js';
         var list = templateList(filelist);
         var template = templateHTML(title, list, `
-        <form action="http://localhost:3000/create_process"
+        <form action="/create_process"
         method="post"> 
           <p><input type="text" name="title" placeholder="title"></p>
           <p>
@@ -108,9 +108,57 @@ var app = http.createServer(function(request,response){
         })
       });
     }
-      else {
-      response.writeHead(404); // 에러발생
-      response.end('Not found');
+      else if(pathname == '/update') { // 업데이트 페이지에서 queryData.id를 가져와 해당 페이지에 form을 통해 정보 수정
+        fs.readdir('/Users/hyunsubong/Developer/Web/TIL/data(web)', function(err, filelist) {
+          fs.readFile(`/Users/hyunsubong/Developer/Web/TIL/data(web)/${queryData.id}`, 'utf8', function(err, description){
+            var title = queryData.id;
+            var list = templateList(filelist);
+            var template = templateHTML(title, list, `
+              <form action="/update_process"
+              method="post"> 
+                <input type="hidden" name="id" value="${title}">
+                <!-- id값은 유지하면서 정보수정 --!>
+                <p><input type="text" name="title" placeholder="title" value="${title}"></p>
+                <p> 
+                <!-- input태그는 value의 속성이 있고 여기에 querystring을 넣어주면 기존의 정보를 불러와줌 --!>
+                  <textarea name="description" placeholder="description">${description}"</textarea>
+                </p>
+                <p>
+                  <input type="submit">
+                </p>
+              </form>
+              `,
+              `<a href="/create">create</a> <a href="/update?id=${title}">update</a>`
+              );// update 버튼을 눌렀을 때 주소창은 /update?id=queryString
+            response.writeHead(200); //파일이 성공적으로 전송됨
+            response.end(template);
+          });
+        });
+      } 
+      else if(pathname == '/update_process') {
+        var body = '';
+        request.on('data', function(data) {
+          body += data;
+        });
+        request.on('end', function() {
+          var post = qs.parse(body);
+          var id = post.id;
+          var title = post.title;
+          var description = post.description;
+          fs.rename(`/Users/hyunsubong/Developer/Web/TIL/data(web)/${id}`, 
+          `/Users/hyunsubong/Developer/Web/TIL/data(web)/${title}`, 
+          function(err) {
+            fs.writeFile(`/Users/hyunsubong/Developer/Web/TIL/data(web)/${title}`, description, 'utf-8', function(err) {
+              // fs.writeFile(file,data[,options], callback)
+                // 아래 코드는 Callback함수가 명령을 처리하고 난 다음의 코드
+                response.writeHead(302, {Location: `/?id=${title}`}); //페이지를 리다이렉션
+                response.end();
+              })
+          })
+        });
+      } else {
+        response.writeHead(404); // 에러발생
+        response.end('Not found');
     }
 });
 app.listen(3000);
