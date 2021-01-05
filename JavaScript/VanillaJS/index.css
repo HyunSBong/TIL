@@ -19,6 +19,10 @@ body{
     display: none;
 }
 
+.showing { 
+    display: block;
+}
+
 @keyframes fadeIn {
     from {
         opacity: 0;
