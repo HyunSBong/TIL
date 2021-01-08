@@ -1,11 +1,14 @@
 import React from 'react';
-import Potato from './Potato';
 
-function App() {
+function Food({fav}) { // react magic , props.fav == {fav}
+  return <h3>I like {fav}</h3>
+}
+
+function App() { //prop = property
   return (
     <div>
       <h1>Hello!</h1>
-      <Potato />
+      <Food fav="pizza"/>
     </div>
   );
 }
