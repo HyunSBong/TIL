@@ -12,7 +12,24 @@ class App extends React.Component {
   minus = () => {
     this.setState(current => ({ count: current.count - 1 }));
   };
+  // Component Life Cycle
+  /*
+  실행 - Render Mount
+  setState - Render Update
+  페이지 나갈 때 - Will Umnount
+  */
+  componentDidMount() {
+    console.log("Component rendered");
+  }
+  componentDidUpdate() {
+    console.log("I just updated");
+  }
+  componentWillUnmount() {
+    console.log("Goodbye");
+  }
+
   render() {
+    console.log("I'm rendering");
     return (
       <div>
         <h1>The number is: {this.state.count}</h1>
